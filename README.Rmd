@@ -1,0 +1,87 @@
+---
+output: 
+    github_document:
+        df_print: tibble
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r Setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(ggplot2)
+library(tidyverse)
+theme_set(theme_bw())
+```
+# pERPred
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of pERPred is to implement the algorithm proposed in "Principle ERP reduction and analysis: Estimating and using principle ERP waveforms underlying ERPs across subjects, channels, and conditions" authored by Emilie Campos and Chad Hazlett et al (link to paper). The algorithm finds a set of basis functions upon which ERP analysis can be applied. 
+
+## Installation
+
+You can install the released version of pERPred from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("pERPred")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("emjcampos/pERPred")
+```
+## Example
+
+An example analysis would begin with a dataframe structured with one column for Task, Subject, and Time, and a column for each electrode.
+
+```{r example}
+library(pERPred)
+```
+
+```{r load data, echo = FALSE}
+load("~/Box Sync/pERPred/vignettes/data/simulated_data.rda")
+```
+
+```{r data}
+simulated_data
+```
+
+```{r, echo = FALSE}
+load("~/Box Sync/pERPred/vignettes/data/true_pERPs.rda")
+start_time <- 0
+end_time <- 1
+datapoints <- 250
+```
+
+```{r, echo = FALSE}
+true_pERPs %>%
+  as.data.frame() %>%
+  rename(
+    "True pERP 1" = V1,
+    "True pERP 2" = V2,
+    "True pERP 3" = V3,
+    "True pERP 4" = V4,
+    "True pERP 5" = V5
+  ) %>%
+  mutate(Time = seq(start_time, end_time, length.out = datapoints)) %>%
+  gather(Component, Signal, -Time) %>%
+  mutate(Component = factor(Component, levels = c(
+    "True pERP 1",
+    "True pERP 2",
+    "True pERP 3",
+    "True pERP 4",
+    "True pERP 5"
+  ))) %>% 
+  ggplot(aes(x = Time, y = Signal)) +
+  geom_line() +
+  facet_wrap( ~ Component, ncol = 2)
+```
+
