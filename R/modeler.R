@@ -4,6 +4,7 @@
 #' @param pERPs The estimated pERPs from the pERP-RED algorithm.
 #'
 #' @return The linear model from regressing the observed record on the estimated pERPs.
+#' @export
 
 modeler <- function(df, pERPs) {
   Signal <- NULL
@@ -33,8 +34,9 @@ modeler <- function(df, pERPs) {
 
 pERP_scorer <- function(df, pERPs) {
   df %>%
-    gather(Electrode, Amplitude, -c(Task, Subject, Time)) %>%
+    gather(Electrode, Signal, -c(Task, Subject, Time)) %>%
     group_by(Task, Subject, Electrode) %>%
     do(model = modeler(., pERPs)) %>%
-    tidy(model)
+    tidy(model) %>%
+    mutate(term = gsub("`", "", term))
 }
