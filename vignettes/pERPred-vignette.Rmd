@@ -169,7 +169,8 @@ pERPs5 %>%
 There are many analyses we can perform using these pERPs. In the paper, we discuss a few. First, we want to compute the weights $\omega_j$ for each record using the `pERP_scorer` function.
 
 ```{r}
-individual_scores <- pERP_scorer(simulated_data, pERPs5, group)
+individual_scores <- pERP_scorer(simulated_data, pERPs5)
+head(individual_scores)
 ```
 
 
