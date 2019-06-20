@@ -17,3 +17,23 @@ modeler <- function(df, pERPs) {
     model <- lm(demean ~ . - 1 - Signal, data = dat)
   }
 }
+
+
+
+#' @title pERP_scorer
+#' @description
+#'
+#' @param df
+#' @param pERPs
+#'
+#' @return
+#' @export
+#'
+
+pERP_scorer <- function(df, pERPs) {
+  df %>%
+    gather(Electrode, Amplitude, -c(Task, Subject, Time)) %>%
+    group_by(Task, Subject, Electrode) %>%
+    do(model = modeler(., pERPs)) %>%
+    tidy(model)
+}
