@@ -216,9 +216,5 @@ pERPred <- function(df, num_pERPs = 20, percent_variation = 80) {
                        paste0("pERP ", .x)
                      )))
 
-  return(
-    list(
-      "pERPs" = ica_results_ordered
-    )
-  )
+  ica_results_ordered
 }
