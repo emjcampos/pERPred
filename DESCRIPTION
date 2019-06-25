@@ -26,5 +26,9 @@ Imports:
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown, 
+    tidyverse, 
+    KRLS2, 
+    LaplacesDemon, 
+    ica
 VignetteBuilder: knitr
