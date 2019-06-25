@@ -21,7 +21,7 @@ modeler <- function(df, pERPs) {
 
 
 #' @title pERP_scorer
-#' @description
+#' @description This function calculates all of the individual score values.
 #'
 #' @param df A dataframe containing all of the observed ERP records.
 #' @param pERPs The estimated pERPs from the pERP-RED algorithm.
@@ -33,6 +33,13 @@ modeler <- function(df, pERPs) {
 #' @importFrom tidyr spread gather unite
 
 pERP_scorer <- function(df, pERPs) {
+  Electrode <- NULL
+  Signal <- NULL
+  Subject <- NULL
+  Time <- NULL
+  Task <- NULL
+  model <- NULL
+  term <- NULL
   df %>%
     gather(Electrode, Signal, -c(Task, Subject, Time)) %>%
     group_by(Task, Subject, Electrode) %>%
