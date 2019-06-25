@@ -15,8 +15,7 @@ knitr::opts_chunk$set(
   fig.pos = "hold",
   fig.width = 6, 
   fig.height = 5,
-  message = FALSE, 
-  cache = TRUE
+  message = FALSE
 )
 
 library(KRLS2)
@@ -146,7 +145,7 @@ pERPs <- map(3:7,
 
 Based on the $R^2_{test}$ values, we would choose 5 as the appropriate number of pERPs since it is the point at which the $R^2_{test}$ tapers off. 
 
-```{r}
+```{r r2 test}
 map_dfr(pERPs, ~R2_test(simulated_data, .x)) 
 ```
 
@@ -168,7 +167,7 @@ pERPs5 %>%
 
 There are many analyses we can perform using these pERPs. In the paper, we discuss a few. First, we want to compute the weights $\omega_j$ for each record using the `pERP_scorer` function.
 
-```{r}
+```{r individual scores}
 individual_scores <- pERP_scorer(simulated_data, pERPs5)
 head(individual_scores)
 ```
