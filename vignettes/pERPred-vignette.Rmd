@@ -1,5 +1,7 @@
 ---
 title: "Principle ERP Reduction (pERP-RED)"
+author: "Emilie Campos" 
+data: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{pERPred-vignette}
@@ -17,35 +19,14 @@ knitr::opts_chunk$set(
   fig.height = 5,
   message = FALSE
 )
-
-library(KRLS2)
-library(ica)
-library(LaplacesDemon)
-library(magrittr)
-library(purrr)
+library(here)
 library(tidyverse)
-source('~/Box Sync/CanonicalERP/code/00_generate-canonical-components.R')
-source('~/Box Sync/CanonicalERP/code/01_simulate-data.R')
+library(latex2exp)
 theme_set(theme_bw())
-```
 
-```{r simulation, echo = FALSE}
-set.seed(1234)
-
-num_tasks      <- 9
-num_electrodes <- 40
-num_subjects   <- 100
-num_components <- 5
-c_variance     <- .25
-datapoints     <- 384
-start_time     <- 0 
-end_time       <- 1
-subject_cov_multipliers <- seq(.1, .5, length.out = num_components)
-
-set.seed(1234) 
-noiselevel     <- sqrt(0.5) # 2/3 signal, 1/3 noise
-simulated_info <- simulate_data()
-simulated_data <- simulated_info$full_data
+load(here("vignettes/data/true_pERPs.rda"))
+load(here("vignettes/data/simulation_data.rda"))
+load(here("vignettes/data/estimation.rda"))
 ```
 
 ```{r hex sticker, echo = FALSE, out.width = "12%", out.extra='style="float:right; padding:10px"'}
@@ -64,7 +45,7 @@ Y_{i,v,e}(t) = \sum_{c=1}^C k_{c,v,e}\phi^{\star}_c(t) + \sum_{c=1}^C \xi_{c,i,v
 In the simulation, $N = 100$, $V = 9$, $C = 5$, $T = 384$, and each subject has a common $E = 40$. The first term reflects that each task and electrode is composed of a weighted average of pERPs, where $\phi^{\star}_c(t)$ are the ``true'' pERPs for purposes of simulation. To simulate a single $\phi^{\star}_c(t)$, we draw a function that is a superposition of Gaussian kernels centered at different time points to produce a smooth, low-frequency function intended to mimic the type of source signals we would expect to contribute to ERP waveforms. These simulated signals are then rotated by ICA to form maximally independent bases and are plotted here. 
 
 ```{r plot true pERPs, echo = FALSE}
-simulated_info$independent_components %>%
+true_pERPs %>%
   as.data.frame() %>%
   rename(
     "True pERP 1" = V1,
@@ -73,7 +54,7 @@ simulated_info$independent_components %>%
     "True pERP 4" = V4,
     "True pERP 5" = V5
   ) %>%
-  mutate(Time = seq(start_time, end_time, length.out = datapoints)) %>%
+  mutate(Time = unique(simulated_data$Time)) %>%
   gather(Component, Signal, -Time) %>%
   mutate(Component = factor(Component, levels = c(
     "True pERP 1",
@@ -120,7 +101,7 @@ and can be calculated using the `R2_test` function.
 
 When estimating the pERPs, split the data into a training and test set, then calculate the $R^2_{test}$. After the number of pERPs is chosen, you can re-estimate the pERPs using the whole dataset. If preferred, it is possible to parallelize the estimation to speed up this process using the `future` package (see commented code). 
 
-```{r estimate pERPs}
+```{r estimate pERPs, eval = FALSE}
 subject_list <- unique(simulated_data$Subject)
 electrode_list <- names(simulated_data)[-c(1:3)]
 task_list <- unique(simulated_data$Task)
@@ -145,15 +126,21 @@ pERPs <- map(3:7,
 
 Based on the $R^2_{test}$ values, we would choose 5 as the appropriate number of pERPs since it is the point at which the $R^2_{test}$ tapers off. 
 
-```{r r2 test}
+```{r r2 test, eval = FALSE}
 map_dfr(pERPs, ~R2_test(simulated_data, .x)) 
 ```
 
-```{r plot pERPs}
+```{r load r2 test, echo = FALSE}
+R2
+```
+
+```{r re-estimate pERPs, eval = FALSE}
 pERPs5 <- pERPred(simulated_data,
                  num_pERPs = 5,
                  percent_variation = 80)
+```
 
+```{r plot pERPs}
 pERPs5 %>%
   mutate(Time = unique(simulated_data$Time)) %>%
   gather(pERP, Amplitude, -Time) %>%
@@ -167,11 +154,40 @@ pERPs5 %>%
 
 There are many analyses we can perform using these pERPs. In the paper, we discuss a few. First, we want to compute the weights $\omega_j$ for each record using the `pERP_scorer` function.
 
-```{r individual scores}
+```{r individual scores, eval = FALSE}
 individual_scores <- pERP_scorer(simulated_data, pERPs5)
+```
+
+```{r head individual scores}
 head(individual_scores)
 ```
 
+Now we can reconstruct each record using their weights and the pERPs. Here is an example using subject 1, electrode 1, task 1.
+
+```{r individual reconstruction}
+record <- simulated_data %>% 
+  filter(Subject == "1", 
+         Task == "1") %>% 
+  select(Task, Time, "electrode_1")
+scores <- individual_scores %>% 
+  filter(Subject == "1", 
+         Electrode == "electrode_1", 
+         Task == "1") %>% 
+  pull(estimate)
+projected <- data.frame("Projected" = as.matrix(pERPs5) %*% 
+                          as.matrix(scores)) %>% 
+  as.data.frame() %>% 
+  mutate(Time = record$Time) %>% 
+  mutate(Projected = Projected + mean(record$electrode_1))
+
+ggplot() + 
+  geom_line(data = record, 
+            aes(x = Time, y = electrode_1, color = "Observed")) + 
+  geom_line(data = projected, 
+            aes(x = Time, y = Projected, color = "Reconstructed")) +
+  theme(legend.title = element_blank()) + 
+  labs(y = TeX("$\\mu V$"))
+```
 
 
 

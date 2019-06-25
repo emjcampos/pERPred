@@ -9,7 +9,7 @@ Authors@R: c(person(given = "Emilie",
               person("Damla", "Senturk", role = c("aut")))
 Description: What the package does (one paragraph).
 Depends: 
-  R (>= 3.0.0)
+  R (>= 3.5.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -30,5 +30,7 @@ Suggests:
     tidyverse, 
     KRLS2, 
     LaplacesDemon, 
-    ica
+    ica,
+    here, 
+    latex2exp
 VignetteBuilder: knitr
