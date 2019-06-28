@@ -1,6 +1,4 @@
 ---
-title: "Principle ERP Reduction (pERP-RED)"
-data: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{pERPred-vignette}
@@ -29,9 +27,7 @@ load(here("vignettes/data/simulation_data.rda"))
 load(here("vignettes/data/estimation.rda"))
 ```
 
-```{r hex sticker, echo = FALSE, out.width = "12%", out.extra='style="float:right; padding:10px"'}
-knitr::include_graphics("pERPred.png")
-```
+# Principle ERP Reduction (pERP-RED) <img src = 'pERPred.png' align = "right" height = "138.5" />
 
 The `pERPred` package is a tool for conducting ERP analyses using the Principle ERP Reduction algorithm put forth in (cite our paper) by Campos and Hazlett et al (2019). This package contains the functions necessary to derive the principle ERPs discussed in that publication as well as the tools for performing "pERP-space analysis". Let this vignette serve as a guide to our approach to ERP analysis in `R`. 
 
