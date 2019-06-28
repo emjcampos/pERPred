@@ -200,6 +200,34 @@ coefficient_headmap("Task_1", average_scores)
 coefficient_headmap("Task_1", average_scores[c("Task_1", "Task_2")])
 ```
 
+Here is an example of how one would conduct tests for differences among groups. We will test if there is a difference in scores for Task_1 and Task_2 at CZ. 
 
+```{r pERP difference}
+pERP_difference(scores = individual_scores,
+                electrode = "CZ",
+                task1 = "Task_1",
+                task2 = "Task_2")
+```
 
+If we had another grouping variable, such as diagnosis, we could add that to the individual scores dataframe. 
+
+```{r pERP difference with groups}
+group <- data.frame(
+  Subject = distinct(simulated_data, Subject),
+  group_member = sample(
+    c("Control", "Treatment"),
+    100,
+    replace = TRUE,
+    prob = c(.5, .5)
+  )
+)
+
+individual_scores_groups <- full_join(individual_scores, group, by = "Subject")
+
+pERP_difference(scores = individual_scores_groups,
+                electrode = "CZ",
+                task1 = "Task_1",
+                group1 = "Control", 
+                group2 = "Treatment")
+```
 
