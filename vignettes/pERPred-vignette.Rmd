@@ -162,33 +162,47 @@ individual_scores <- pERP_scorer(simulated_data, pERPs5)
 head(individual_scores)
 ```
 
-Now we can reconstruct each record using their weights and the pERPs. Here is an example using subject 1, electrode 1, task 1.
+Now we can reconstruct each record using their weights and the pERPs. Here is an example using subject 1, electrode CZ, task 1.
 
 ```{r individual reconstruction}
 record <- simulated_data %>% 
-  filter(Subject == "1", 
-         Task == "1") %>% 
-  select(Task, Time, "electrode_1")
+  filter(Subject == "Subject_001", 
+         Task == "Task_1") %>% 
+  select(Task, Time, "CZ")
 scores <- individual_scores %>% 
-  filter(Subject == "1", 
-         Electrode == "electrode_1", 
-         Task == "1") %>% 
+  filter(Subject == "Subject_001", 
+         Electrode == "CZ", 
+         Task == "Task_1") %>% 
   pull(estimate)
 projected <- data.frame("Projected" = as.matrix(pERPs5) %*% 
                           as.matrix(scores)) %>% 
   as.data.frame() %>% 
   mutate(Time = record$Time) %>% 
-  mutate(Projected = Projected + mean(record$electrode_1))
+  mutate(Projected = Projected + mean(record$CZ))
 
 ggplot() + 
   geom_line(data = record, 
-            aes(x = Time, y = electrode_1, color = "Observed")) + 
+            aes(x = Time, y = CZ, color = "Observed")) + 
   geom_line(data = projected, 
             aes(x = Time, y = Projected, color = "Reconstructed")) +
   theme(legend.title = element_blank()) + 
   labs(y = TeX("$\\mu V$"))
 ```
 
+Keeping in mind that this is simulated data, we can visualize how these weights are represented across the scalp for all subjects using the `coefficient_headmap` function. Create a dataframe of the average scores where the column of averages is named `average`. Split the dataframe by Task to create  a list of dataframes. This will allow the scale to remain the same over all tasks. If you want the scale to stay the same over only selected Tasks, only include those tasks in the list of dataframes.
+
+```{r}
+average_scores <- individual_scores %>% 
+  group_by(Task, Electrode, term) %>% 
+  summarise(average = mean(estimate, na.rm = TRUE)) %>% 
+  split(.$Task)
+
+# keep scale the same across all tasks
+coefficient_headmap("Task_1", average_scores)
+
+# keep scale the same across only tasks 1 and 2
+coefficient_headmap("Task_1", average_scores[c("Task_1", "Task_2")])
+```
 
 
 
