@@ -22,7 +22,9 @@ Imports:
     dplyr, 
     purrr, 
     tidyr, 
-    tibble
+    tibble, 
+    ggplot2,
+    grDevices
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
