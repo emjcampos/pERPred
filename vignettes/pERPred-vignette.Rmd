@@ -1,6 +1,5 @@
 ---
 title: "Principle ERP Reduction (pERP-RED)"
-author: "Emilie Campos" 
 data: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -13,6 +12,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
+  fig.path = "figures/",
   fig.align = "center", 
   fig.pos = "hold",
   fig.width = 6, 
@@ -44,7 +44,7 @@ Y_{i,v,e}(t) = \sum_{c=1}^C k_{c,v,e}\phi^{\star}_c(t) + \sum_{c=1}^C \xi_{c,i,v
 
 In the simulation, $N = 100$, $V = 9$, $C = 5$, $T = 384$, and each subject has a common $E = 40$. The first term reflects that each task and electrode is composed of a weighted average of pERPs, where $\phi^{\star}_c(t)$ are the ``true'' pERPs for purposes of simulation. To simulate a single $\phi^{\star}_c(t)$, we draw a function that is a superposition of Gaussian kernels centered at different time points to produce a smooth, low-frequency function intended to mimic the type of source signals we would expect to contribute to ERP waveforms. These simulated signals are then rotated by ICA to form maximally independent bases and are plotted here. 
 
-```{r plot true pERPs, echo = FALSE}
+```{r true_pERPs, echo = FALSE}
 true_pERPs %>%
   as.data.frame() %>%
   rename(
@@ -140,7 +140,7 @@ pERPs5 <- pERPred(simulated_data,
                  percent_variation = 80)
 ```
 
-```{r plot pERPs}
+```{r plot_pERPs}
 pERPs5 %>%
   mutate(Time = unique(simulated_data$Time)) %>%
   gather(pERP, Amplitude, -Time) %>%
@@ -164,7 +164,7 @@ head(individual_scores)
 
 Now we can reconstruct each record using their weights and the pERPs. Here is an example using subject 1, electrode CZ, task 1.
 
-```{r individual reconstruction}
+```{r individual_reconstruction}
 record <- simulated_data %>% 
   filter(Subject == "Subject_001", 
          Task == "Task_1") %>% 
@@ -191,7 +191,7 @@ ggplot() +
 
 Keeping in mind that this is simulated data, we can visualize how these weights are represented across the scalp for all subjects using the `coefficient_headmap` function. Create a dataframe of the average scores where the column of averages is named `average`. Split the dataframe by Task to create  a list of dataframes. This will allow the scale to remain the same over all tasks. If you want the scale to stay the same over only selected Tasks, only include those tasks in the list of dataframes.
 
-```{r}
+```{r headmaps}
 average_scores <- individual_scores %>% 
   group_by(Task, Electrode, term) %>% 
   summarise(average = mean(estimate, na.rm = TRUE)) %>% 
