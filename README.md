@@ -37,52 +37,84 @@ devtools::install_github("emjcampos/pERPred")
 The generation model for the simulated data is described in the
 publication as follows. The observed signal is assumed to be a linear
 combination of the principal ERP components (pERPs). Let
-\(Y_{i,v,e}(t)\) denote the ERP signal observed for subject \(i\) at
-task \(v\) and electrode \(e\). The data generation model in the
-simulation will be: 
+![Y\_{i,v,e}(t)](https://latex.codecogs.com/png.latex?Y_%7Bi%2Cv%2Ce%7D%28t%29
+"Y_{i,v,e}(t)") denote the ERP signal observed for subject
+![i](https://latex.codecogs.com/png.latex?i "i") at task
+![v](https://latex.codecogs.com/png.latex?v "v") and electrode
+![e](https://latex.codecogs.com/png.latex?e "e"). The data generation
+model in the simulation will be: 
 
-In the simulation, \(N = 100\), \(V = 9\), \(C = 5\), \(T = 384\), and
-each subject has a common \(E = 40\). The first term reflects that each
-task and electrode is composed of a weighted average of pERPs, where
-\(\phi^{\star}_c(t)\) are the \`\`true’’ pERPs for purposes of
-simulation. To simulate a single \(\phi^{\star}_c(t)\), we draw a
-function that is a superposition of Gaussian kernels centered at
-different time points to produce a smooth, low-frequency function
-intended to mimic the type of source signals we would expect to
-contribute to ERP waveforms. These simulated signals are then rotated by
-ICA to form maximally independent bases and are plotted
+In the simulation, ![N
+= 100](https://latex.codecogs.com/png.latex?N%20%3D%20100 "N = 100"),
+![V = 9](https://latex.codecogs.com/png.latex?V%20%3D%209 "V = 9"), ![C
+= 5](https://latex.codecogs.com/png.latex?C%20%3D%205 "C = 5"), ![T
+= 384](https://latex.codecogs.com/png.latex?T%20%3D%20384 "T = 384"),
+and each subject has a common ![E
+= 40](https://latex.codecogs.com/png.latex?E%20%3D%2040 "E = 40"). The
+first term reflects that each task and electrode is composed of a
+weighted average of pERPs, where
+![\\phi^{\\star}\_c(t)](https://latex.codecogs.com/png.latex?%5Cphi%5E%7B%5Cstar%7D_c%28t%29
+"\\phi^{\\star}_c(t)") are the \`\`true’’ pERPs for purposes of
+simulation. To simulate a single
+![\\phi^{\\star}\_c(t)](https://latex.codecogs.com/png.latex?%5Cphi%5E%7B%5Cstar%7D_c%28t%29
+"\\phi^{\\star}_c(t)"), we draw a function that is a superposition of
+Gaussian kernels centered at different time points to produce a smooth,
+low-frequency function intended to mimic the type of source signals we
+would expect to contribute to ERP waveforms. These simulated signals are
+then rotated by ICA to form maximally independent bases and are plotted
 here.
 
 <img src="man/figures/README-true_pERPs-1.png" width="60%" style="display: block; margin: auto;" />
 
-The coefficients, \(k_{c,v,e}\), are drawn from a normal distribution
-with mean zero and variance \(\sigma^2_{k}=0.25\).
+The coefficients,
+![k\_{c,v,e}](https://latex.codecogs.com/png.latex?k_%7Bc%2Cv%2Ce%7D
+"k_{c,v,e}"), are drawn from a normal distribution with mean zero and
+variance
+![\\sigma^2\_{k}=0.25](https://latex.codecogs.com/png.latex?%5Csigma%5E2_%7Bk%7D%3D0.25
+"\\sigma^2_{k}=0.25").
 
 The second term reflects the structured stochastic canonical component
 with dependencies within a subject across tasks and electrodes. The
-subject specific scores \(\xi_{c,i,v,e}\) will be simulated from a
-Matrix Normal (to create a depedence structure within tasks and across
-electrodes) with mean zero and covariance matrices \(\Sigma_{c,v}\) and
-\(\Sigma_{c,e}\) of dimension \(V\ast V\) and \(E\ast E\) (identically
-and independently drawn over subjects only). The covariance matrices are
-created in the same way for the electrode and task dimensions. A matrix
-with 0.5 on the diagonal and 0.1 elsewhere created. Each of these is
-multiplied by a factor (0.1, 0.2, 0.3, 0.4, 0.5), so that each true ERP
-component is represented differently. In the results, we expect the
-component with the highest multiplier to explain the most variation in
-the observed signals.
+subject specific scores
+![\\xi\_{c,i,v,e}](https://latex.codecogs.com/png.latex?%5Cxi_%7Bc%2Ci%2Cv%2Ce%7D
+"\\xi_{c,i,v,e}") will be simulated from a Matrix Normal (to create a
+depedence structure within tasks and across electrodes) with mean zero
+and covariance matrices
+![\\Sigma\_{c,v}](https://latex.codecogs.com/png.latex?%5CSigma_%7Bc%2Cv%7D
+"\\Sigma_{c,v}") and
+![\\Sigma\_{c,e}](https://latex.codecogs.com/png.latex?%5CSigma_%7Bc%2Ce%7D
+"\\Sigma_{c,e}") of dimension ![V\\ast
+V](https://latex.codecogs.com/png.latex?V%5Cast%20V "V\\ast V") and
+![E\\ast E](https://latex.codecogs.com/png.latex?E%5Cast%20E "E\\ast E")
+(identically and independently drawn over subjects only). The covariance
+matrices are created in the same way for the electrode and task
+dimensions. A matrix with 0.5 on the diagonal and 0.1 elsewhere created.
+Each of these is multiplied by a factor (0.1, 0.2, 0.3, 0.4, 0.5), so
+that each true ERP component is represented differently. In the results,
+we expect the component with the highest multiplier to explain the most
+variation in the observed signals.
 
 The last term is the independent and identically distributed (iid)
-measurement error. The measurement error \(\zeta_{i,v,e}(t)\) will be
-simulated as independent draws (over \(i\), \(v\), and \(e\)) from a
-normal distribution with mean zero and variance
-\(\sigma_\text{error}^2\) equal to some proportion of the signal
+measurement error. The measurement error
+![\\zeta\_{i,v,e}(t)](https://latex.codecogs.com/png.latex?%5Czeta_%7Bi%2Cv%2Ce%7D%28t%29
+"\\zeta_{i,v,e}(t)") will be simulated as independent draws (over
+![i](https://latex.codecogs.com/png.latex?i "i"),
+![v](https://latex.codecogs.com/png.latex?v "v"), and
+![e](https://latex.codecogs.com/png.latex?e "e")) from a normal
+distribution with mean zero and variance
+![\\sigma\_\\text{error}^2](https://latex.codecogs.com/png.latex?%5Csigma_%5Ctext%7Berror%7D%5E2
+"\\sigma_\\text{error}^2") equal to some proportion of the signal
 variance. Define the variance of the simulated signal terms
-\(\sum_{c=1}^C k_{c,v,e}\phi^{\star}_c(t) + \sum_{c=1}^C \xi_{c,i,v,e}\phi^{\star}_c(t)\)
-to be \(\sigma_\text{signal}^2\). For the purposes of this vignette, we
-will only explore the low noise case in which 1/3 of the simulated ERP
-will be noise so
-\(\sigma^2_\text{error} = \sqrt{0.5}\times\sigma_\text{signal}\).
+![\\sum\_{c=1}^C k\_{c,v,e}\\phi^{\\star}\_c(t) + \\sum\_{c=1}^C
+\\xi\_{c,i,v,e}\\phi^{\\star}\_c(t)](https://latex.codecogs.com/png.latex?%5Csum_%7Bc%3D1%7D%5EC%20k_%7Bc%2Cv%2Ce%7D%5Cphi%5E%7B%5Cstar%7D_c%28t%29%20%2B%20%5Csum_%7Bc%3D1%7D%5EC%20%5Cxi_%7Bc%2Ci%2Cv%2Ce%7D%5Cphi%5E%7B%5Cstar%7D_c%28t%29
+"\\sum_{c=1}^C k_{c,v,e}\\phi^{\\star}_c(t) + \\sum_{c=1}^C \\xi_{c,i,v,e}\\phi^{\\star}_c(t)")
+to be
+![\\sigma\_\\text{signal}^2](https://latex.codecogs.com/png.latex?%5Csigma_%5Ctext%7Bsignal%7D%5E2
+"\\sigma_\\text{signal}^2"). For the purposes of this vignette, we will
+only explore the low noise case in which 1/3 of the simulated ERP will
+be noise so ![\\sigma^2\_\\text{error} =
+\\sqrt{0.5}\\times\\sigma\_\\text{signal}](https://latex.codecogs.com/png.latex?%5Csigma%5E2_%5Ctext%7Berror%7D%20%3D%20%5Csqrt%7B0.5%7D%5Ctimes%5Csigma_%5Ctext%7Bsignal%7D
+"\\sigma^2_\\text{error} = \\sqrt{0.5}\\times\\sigma_\\text{signal}").
 
 The data to be used in the `pERPred` function must be averaged over
 trials. Then there must be one column for the “Task”, “Subject”, and
@@ -119,14 +151,17 @@ two choices that are chosen by the user:
 By default, the percent of variation is set to 80. Raising this value
 means more components will be kept in each of the PCA steps and the
 computation time will rise accordingly. Also, the number of pERPs is
-chosen based on an \(R^2\) value defined as:  and can be calculated
-using the `R2_test` function.
+chosen based on an ![R^2](https://latex.codecogs.com/png.latex?R%5E2
+"R^2") value defined as:  and can be calculated using the `R2_test`
+function.
 
 When estimating the pERPs, split the data into a training and test set,
-then calculate the \(R^2_{test}\). After the number of pERPs is chosen,
-you can re-estimate the pERPs using the whole dataset. If preferred, it
-is possible to parallelize the estimation to speed up this process using
-the `future` package (see commented code).
+then calculate the
+![R^2\_{test}](https://latex.codecogs.com/png.latex?R%5E2_%7Btest%7D
+"R^2_{test}"). After the number of pERPs is chosen, you can re-estimate
+the pERPs using the whole dataset. If preferred, it is possible to
+parallelize the estimation to speed up this process using the `future`
+package (see commented code).
 
 ``` r
 subject_list <- unique(simulated_data$Subject)
@@ -151,9 +186,12 @@ pERPs <- map(3:7,
 #                     .progress = TRUE)
 ```
 
-Based on the \(R^2_{test}\) values, we would choose 5 as the appropriate
-number of pERPs since it is the point at which the \(R^2_{test}\) tapers
-off.
+Based on the
+![R^2\_{test}](https://latex.codecogs.com/png.latex?R%5E2_%7Btest%7D
+"R^2_{test}") values, we would choose 5 as the appropriate number of
+pERPs since it is the point at which the
+![R^2\_{test}](https://latex.codecogs.com/png.latex?R%5E2_%7Btest%7D
+"R^2_{test}") tapers off.
 
 ``` r
 map_dfr(pERPs, ~R2_test(simulated_data, .x)) 
@@ -188,8 +226,9 @@ pERPs5 %>%
 ### pERP-space Analysis
 
 There are many analyses we can perform using these pERPs. In the paper,
-we discuss a few. First, we want to compute the weights \(\omega_j\) for
-each record using the `pERP_scorer` function.
+we discuss a few. First, we want to compute the weights
+![\\omega\_j](https://latex.codecogs.com/png.latex?%5Comega_j
+"\\omega_j") for each record using the `pERP_scorer` function.
 
 ``` r
 individual_scores <- pERP_scorer(simulated_data, pERPs5)
