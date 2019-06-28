@@ -1,13 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# pERPred
+# pERPred <img src = 'man/figures/pERPred.png' align = "right" height = "138.5" />
 
 <!-- badges: start -->
 
 <!-- badges: end -->
-
-<img src="man/figures/pERPred.png" width="12%" style="float:right; padding:10px" style="display: block; margin: auto;" />
 
 The `pERPred` package is a tool for conducting ERP analyses using the
 Principle ERP Reduction algorithm put forth in (cite our paper) by
