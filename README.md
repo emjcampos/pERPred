@@ -7,8 +7,6 @@
 
 <!-- badges: end -->
 
-## Overview
-
 The `pERPred` package is a tool for conducting ERP analyses using the
 Principle ERP Reduction algorithm put forth in (cite our paper) by
 Campos and Hazlett et al (2019). This package contains the functions
@@ -308,6 +306,7 @@ If we had another grouping variable, such as diagnosis, we could add
 that to the individual scores dataframe.
 
 ``` r
+set.seed(1234)
 group <- data.frame(
   Subject = distinct(simulated_data, Subject),
   group_member = sample(
@@ -326,27 +325,30 @@ pERP_difference(scores = individual_scores_groups,
                 group1 = "Control", 
                 group2 = "Treatment")
 #>      pERP Task_1 Control Mean Task_1 Control APSD Task_1 Control SE
-#> 1 pERP 01           0.3516797           0.3717068        0.05012094
-#> 2 pERP 02           0.2862785           0.2338138        0.03152745
-#> 3 pERP 03          -0.2753040           0.1927248        0.02598700
-#> 4 pERP 04           0.2162622           0.3824479        0.05156926
-#> 5 pERP 05          -0.6984879           0.3386621        0.04566519
+#> 1 pERP 01           0.3023001           0.3446887        0.05138316
+#> 2 pERP 02           0.2997375           0.2228006        0.03321315
+#> 3 pERP 03          -0.2922279           0.2063993        0.03076820
+#> 4 pERP 04           0.2160037           0.3539055        0.05275711
+#> 5 pERP 05          -0.7609320           0.3456268        0.05152300
 #>   Task_1 Control t Task_1 Control N Task_1 Treatment Mean
-#> 1         7.016622               55             0.3303963
-#> 2         9.080294               55             0.2647461
-#> 3       -10.593911               55            -0.2824625
-#> 4         4.193627               55             0.2175484
-#> 5       -15.295852               55            -0.7932452
+#> 1         5.883251               45             0.3746675
+#> 2         9.024661               45             0.2576492
+#> 3        -9.497727               45            -0.2673141
+#> 4         4.094306               45             0.2175260
+#> 5       -14.768784               45            -0.7249260
 #>   Task_1 Treatment APSD Task_1 Treatment SE Task_1 Treatment t
-#> 1             0.3306161          0.04928533           6.703746
-#> 2             0.2408682          0.03590651           7.373208
-#> 3             0.2226844          0.03319583          -8.508974
-#> 4             0.3901543          0.05816077           3.740465
-#> 5             0.2860229          0.04263778         -18.604278
+#> 1             0.3580919          0.04828510           7.759486
+#> 2             0.2467701          0.03327447           7.743148
+#> 3             0.2063382          0.02782264          -9.607788
+#> 4             0.4101740          0.05530784           3.933005
+#> 5             0.2958655          0.03989450         -18.171076
 #>   Task_1 Treatment N Mean Difference SE Difference           t signif
-#> 1                 45     0.021283336    0.07029333  0.30277888       
-#> 2                 45     0.021532344    0.04778344  0.45062358       
-#> 3                 45     0.007158458    0.04215789  0.16980117       
-#> 4                 45    -0.001286112    0.07773071 -0.01654574       
-#> 5                 45     0.094757241    0.06247631  1.51669065
+#> 1                 55    -0.072367483    0.07051014 -1.02634145       
+#> 2                 55     0.042088294    0.04701387  0.89523136       
+#> 3                 55    -0.024913886    0.04148230 -0.60059070       
+#> 4                 55    -0.001522269    0.07643475 -0.01991593       
+#> 5                 55    -0.036006055    0.06516280 -0.55255539
 ```
+
+The user can insert these tables directly into their manuscript using
+`kable`, `xtable` or any other of a number of tools in `R`.

@@ -30,8 +30,6 @@ load(here("vignettes/data/estimation.rda"))
 <!-- badges: start -->
 <!-- badges: end -->
 
-## Overview 
-
 The `pERPred` package is a tool for conducting ERP analyses using the Principle ERP Reduction algorithm put forth in (cite our paper) by Campos and Hazlett et al (2019). This package contains the functions necessary to derive the principle ERPs discussed in that publication as well as the tools for performing "pERP-space analysis". Let this serve as a guide to our approach to ERP analysis in `R`. 
 
 ## Installation
@@ -231,6 +229,7 @@ pERP_difference(scores = individual_scores,
 If we had another grouping variable, such as diagnosis, we could add that to the individual scores dataframe. 
 
 ```{r pERP difference with groups}
+set.seed(1234)
 group <- data.frame(
   Subject = distinct(simulated_data, Subject),
   group_member = sample(
@@ -250,3 +249,4 @@ pERP_difference(scores = individual_scores_groups,
                 group2 = "Treatment")
 ```
 
+The user can insert these tables directly into their manuscript using `kable`, `xtable` or any other of a number of tools in `R`. 
