@@ -5,7 +5,7 @@
 \title{Calculate t-tests for pERPs}
 \usage{
 pERP_difference(scores, electrode, task1, group1 = "Overall",
-  task2 = task1, group2 = group1)
+  task2 = task1, group2 = group1, double_difference = FALSE)
 }
 \arguments{
 \item{scores}{The dataframe with all of the individual weights.}
@@ -19,6 +19,8 @@ pERP_difference(scores, electrode, task1, group1 = "Overall",
 \item{task2}{A string of the second task for comparison, set to the same value as task1 by default.}
 
 \item{group2}{A string of the second treatment/diagnosis group to test. If "Overall", all of the individuals will be averaged.}
+
+\item{double_difference}{A logical to contrast task1 - task2. Use in cases such as correct - incorrect.}
 }
 \value{
 A dataframe of t-test results
