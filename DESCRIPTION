@@ -17,6 +17,7 @@ Imports:
     matrixcalc,
     magrittr,
     fastICA,
+    factoextra, 
     broom,
     stats,
     dplyr, 
@@ -24,10 +25,16 @@ Imports:
     tidyr, 
     tibble, 
     ggplot2,
-    grDevices
+    grDevices, 
+    gridExtra, 
+    shiny, 
+    shinythemes, 
+    stringr, 
+    plyr, 
+    kableExtra, 
+    knitr
 RoxygenNote: 6.1.1
 Suggests: 
-    knitr,
     rmarkdown, 
     tidyverse, 
     KRLS2, 

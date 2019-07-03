@@ -406,3 +406,14 @@ pERP_difference(scores = individual_scores_groups,
 
 The user can insert these tables directly into their manuscript using
 `kable`, `xtable` or any other of a number of tools in `R`.
+
+### Shiny app
+
+In our paper we reference a Shiny application that we used to explore
+all of the results from the pERP-space analysis easily
+(<https://perpred.shinyapps.io/asd_exploration>). The function
+`shiny_pERPs` will allow you to create a very similiar application.
+
+``` r
+shiny_pERPs(simulated_data, group, pERPs5, individual_scores) 
+```
