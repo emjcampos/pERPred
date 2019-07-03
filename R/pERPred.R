@@ -9,7 +9,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @param num_pERPs The number of pERPs to estimate.
 #' @param percent_variation The percent variation to use in the PCA steps.
 #'
-#' @return pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorith.
+#' @return pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorithm.
 #' @export
 #'
 #' @importFrom stats sd princomp complete.cases setNames
@@ -18,6 +18,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @importFrom tidyr spread gather unite
 #' @importFrom purrr map_chr map_dfr
 #' @importFrom tibble rownames_to_column
+#' @importFrom factoextra get_eigenvalue
 
 pERPred <- function(df, num_pERPs = 20, percent_variation = 80) {
   # to avoid issues with non-standard evaluation in tidyeval, set "global
@@ -44,7 +45,7 @@ pERPred <- function(df, num_pERPs = 20, percent_variation = 80) {
   num_subjects <- length(subject_list)
   task_list <- unique(df$Task)
   num_tasks <- length(task_list)
-  electrode_list <- names(df)[-c(1:3)]
+  electrode_list <- names(df)[! names(df) %in% c("Task", "Subject", "Time")]
   num_electrodes <- length(electrode_list)
 
   # Normalize each record --------------------------------------------------

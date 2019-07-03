@@ -14,7 +14,7 @@ pERPred(df, num_pERPs = 20, percent_variation = 80)
 \item{percent_variation}{The percent variation to use in the PCA steps.}
 }
 \value{
-pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorith.
+pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorithm.
 }
 \description{
 This function will contain the estimation algorithm of the principle ERPs (pERPs).
