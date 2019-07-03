@@ -16,6 +16,7 @@ coefficient_headmap <- function(task, scores) {
   Electrode <- NULL
   x <- NULL
   y <- NULL
+  rm(list = c("average", "Electrode", "x", "y"))
 
   theme_topo <- function(base_size = 12) {
     theme_bw(base_size = base_size) %+replace%

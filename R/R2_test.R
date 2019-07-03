@@ -36,7 +36,8 @@ R2_test <- function(df, pERPs) {
   Electrode <- NULL
   RSS_g     <- NULL
   TSS_g     <- NULL
-  rm(list = c("Subject", "Time", "Task", "Signal", "Electrode", "RSS_g", "TSS_g"))
+  rm(list = c("Subject", "Time", "Task", "Signal", "Electrode", "RSS_g",
+              "TSS_g"))
 
   rows    <- nrow(pERPs)
   columns <- ncol(pERPs)

@@ -9,6 +9,7 @@
 modeler <- function(df, pERPs) {
   Signal <- NULL
   rm(list = "Signal")
+
   dat <- cbind(Signal = df$Signal, pERPs) %>%
     mutate(demean = scale(Signal, center = TRUE, scale = FALSE))
   if(sum(is.na(dat$Signal)) > 0){
@@ -40,10 +41,13 @@ pERP_scorer <- function(df, pERPs) {
   Task <- NULL
   model <- NULL
   term <- NULL
+  rm(list = c("Electrode", "Signal", "Subject", "Time", "Task", "model", "term"))
+
   df %>%
     gather(Electrode, Signal, -c(Task, Subject, Time)) %>%
     group_by(Task, Subject, Electrode) %>%
     do(model = modeler(., pERPs)) %>%
     tidy(model) %>%
-    mutate(term = gsub("`", "", term))
+    mutate(term = gsub("`", "", term)) %>%
+    ungroup()
 }
