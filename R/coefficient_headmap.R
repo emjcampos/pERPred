@@ -1,6 +1,6 @@
 
-#' @title Create a headmap to visualize the scalp distribution of the scores on each of the pERPs
-#' @description description
+#' @title Scalp distribution of the scores on each of the pERPs
+#' @description This function will create a heatmap of scalp distribution of the scores on each of the pERPs.
 #'
 #' @param task The string for one of the tasks used to estimate the pERPs.
 #' @param scores A dataframe of scores calculated for the task. In the case of multiple tasks to be compared, use a named list of dataframes where the names are the tasks.

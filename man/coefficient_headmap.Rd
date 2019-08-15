@@ -2,7 +2,7 @@
 % Please edit documentation in R/coefficient_headmap.R
 \name{coefficient_headmap}
 \alias{coefficient_headmap}
-\title{Create a headmap to visualize the scalp distribution of the scores on each of the pERPs}
+\title{Scalp distribution of the scores on each of the pERPs}
 \usage{
 coefficient_headmap(task, scores)
 }
@@ -15,5 +15,5 @@ coefficient_headmap(task, scores)
 A ggplot of with the headmaps of the scores averaged within the task for each pERP
 }
 \description{
-description
+This function will create a heatmap of scalp distribution of the scores on each of the pERPs.
 }
