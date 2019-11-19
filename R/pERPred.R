@@ -7,7 +7,8 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #'
 #' @param df The dataframe with a column for Task, Subject, and Time. The remaining columns are the Electrodes.
 #' @param num_pERPs The number of pERPs to estimate.
-#' @param percent_variation The percent variation to use in the PCA steps.
+#' @param percent_variation_electrode The percent variation to use in the electrode PCA step.
+#' #' @param percent_variation_subject The percent variation to use in the subject PCA step.
 #'
 #' @return pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorithm.
 #' @export
@@ -20,7 +21,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @importFrom tibble rownames_to_column
 #' @importFrom factoextra get_eigenvalue
 
-pERPred <- function(df, num_pERPs = 20, percent_variation = 80) {
+pERPred <- function(df, num_pERPs = 20, percent_variation_electrodes = 80, percent_variation_subject = 80) {
   # to avoid issues with non-standard evaluation in tidyeval, set "global
   # variables" to NULL and remove them. this won't cause an issue with the rest
   # of the code.
@@ -92,7 +93,7 @@ pERPred <- function(df, num_pERPs = 20, percent_variation = 80) {
     electrode_num_comps_chosen[[person]] <-
       min(
         which(
-          electrode_var_tables[[person]]$cumulative.variance.percent >= percent_variation
+          electrode_var_tables[[person]]$cumulative.variance.percent >= percent_variation_electrode
         )
       )
 
@@ -161,7 +162,7 @@ pERPred <- function(df, num_pERPs = 20, percent_variation = 80) {
   subject_region_vartable <- get_eigenvalue(subject_region_pca)
   num_subject_regions_chosen <- min(
     which(
-      subject_region_vartable$cumulative.variance.percent >= percent_variation
+      subject_region_vartable$cumulative.variance.percent >= percent_variation_subject
     )
   )
 
