@@ -21,7 +21,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @importFrom tibble rownames_to_column
 #' @importFrom factoextra get_eigenvalue
 
-pERPred <- function(df, num_pERPs = 20, percent_variation_electrodes = 80, percent_variation_subject = 80) {
+pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percent_variation_subject = 80) {
   # to avoid issues with non-standard evaluation in tidyeval, set "global
   # variables" to NULL and remove them. this won't cause an issue with the rest
   # of the code.
