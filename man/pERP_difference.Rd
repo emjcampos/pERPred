@@ -4,8 +4,15 @@
 \alias{pERP_difference}
 \title{Calculate t-tests for pERPs}
 \usage{
-pERP_difference(scores, electrode, task1, group1 = "Overall",
-  task2 = task1, group2 = group1, double_difference = FALSE)
+pERP_difference(
+  scores,
+  electrode,
+  task1,
+  group1 = "Overall",
+  task2 = task1,
+  group2 = group1,
+  double_difference = FALSE
+)
 }
 \arguments{
 \item{scores}{The dataframe with all of the individual weights.}
