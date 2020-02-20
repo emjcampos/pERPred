@@ -22,17 +22,17 @@ Example
 
 ### Simulated Data Description
 
-The generation model for the simulated data is described in the publication as follows. The observed signal is assumed to be a linear combination of the principal ERP components (pERPs). Let $\\scriptstyle Y\_{i,v,e}(t)$ denote the ERP signal observed for subject *i* at task *v* and electrode *e*. The data generation model in the simulation will be: $\\scriptstyle Y\_{i,v,e}(t) = \\sum\_{c=1}^C k\_{c,v,e}\\phi^{\\star}\_c(t) + \\sum\_{c=1}^C \\xi\_{c,i,v,e}\\phi^{\\star}\_c(t) + \\zeta\_{i,v,e}(t).$
+The generation model for the simulated data is described in the publication as follows. The observed signal is assumed to be a linear combination of the principal ERP components (pERPs). Let *Y*<sub>*i*, *v*, *e*</sub>(*t*) denote the ERP signal observed for subject *i* at task *v* and electrode *e*. The data generation model in the simulation will be: $Y\_{i,v,e}(t) = \\sum\_{c=1}^C k\_{c,v,e}\\phi^{\\star}\_c(t) + \\sum\_{c=1}^C \\xi\_{c,i,v,e}\\phi^{\\star}\_c(t) + \\zeta\_{i,v,e}(t).$
 
-In the simulation, $\\scriptstyle N = 100$, $\\scriptstyle V = 9$, $\\scriptstyle C = 5$, $\\scriptstyle T = 384$, and each subject has a common *E* = 40. The first term reflects that each task and electrode is composed of a weighted average of pERPs, where $\\scriptstyle \\phi^{\\star}\_c(t)$ are the \`\`true'' pERPs for purposes of simulation. To simulate a single $\\scriptstyle \\phi^{\\star}\_c(t)$, we draw a function that is a superposition of Gaussian kernels centered at different time points to produce a smooth, low-frequency function intended to mimic the type of source signals we would expect to contribute to ERP waveforms. These simulated signals are then rotated by ICA to form maximally independent bases and are plotted here.
+In the simulation, *N* = 100, *V* = 9, *C* = 5, *T* = 384, and each subject has a common *E* = 40. The first term reflects that each task and electrode is composed of a weighted average of pERPs, where *ϕ*<sub>*c*</sub><sup>⋆</sup>(*t*) are the \`\`true'' pERPs for purposes of simulation. To simulate a single *ϕ*<sub>*c*</sub><sup>⋆</sup>(*t*), we draw a function that is a superposition of Gaussian kernels centered at different time points to produce a smooth, low-frequency function intended to mimic the type of source signals we would expect to contribute to ERP waveforms. These simulated signals are then rotated by ICA to form maximally independent bases and are plotted here.
 
 <img src="man/figures/README-true_pERPs-1.png" width="60%" style="display: block; margin: auto;" />
 
-The coefficients, $\\scriptstyle k\_{c,v,e}$, are drawn from a normal distribution with mean zero and variance $\\scriptstyle \\sigma^2\_{k}=0.25$.
+The coefficients, *k*<sub>*c*, *v*, *e*</sub>, are drawn from a normal distribution with mean zero and variance *σ*<sub>*k*</sub><sup>2</sup> = 0.25.
 
-The second term reflects the structured stochastic canonical component with dependencies within a subject across tasks and electrodes. The subject specific scores $\\scriptstyle \\xi\_{c,i,v,e}$ will be simulated from a Matrix Normal (to create a depedence structure within tasks and across electrodes) with mean zero and covariance matrices $\\scriptstyle \\Sigma\_{c,v}$ and $\\scriptstyle \\Sigma\_{c,e}$ of dimension $\\scriptstyle V\\ast V$ and $\\scriptstyle E\\ast E$ (identically and independently drawn over subjects only). The covariance matrices are created in the same way for the electrode and task dimensions. A matrix with 0.5 on the diagonal and 0.1 elsewhere created. Each of these is multiplied by a factor (0.1, 0.2, 0.3, 0.4, 0.5), so that each true ERP component is represented differently. In the results, we expect the component with the highest multiplier to explain the most variation in the observed signals.
+The second term reflects the structured stochastic canonical component with dependencies within a subject across tasks and electrodes. The subject specific scores *ξ*<sub>*c*, *i*, *v*, *e*</sub> will be simulated from a Matrix Normal (to create a depedence structure within tasks and across electrodes) with mean zero and covariance matrices *Σ*<sub>*c*, *v*</sub> and *Σ*<sub>*c*, *e*</sub> of dimension *V* \* *V* and *E* \* *E* (identically and independently drawn over subjects only). The covariance matrices are created in the same way for the electrode and task dimensions. A matrix with 0.5 on the diagonal and 0.1 elsewhere created. Each of these is multiplied by a factor (0.1, 0.2, 0.3, 0.4, 0.5), so that each true ERP component is represented differently. In the results, we expect the component with the highest multiplier to explain the most variation in the observed signals.
 
-The last term is the independent and identically distributed (iid) measurement error. The measurement error $\\scriptstyle \\zeta\_{i,v,e}(t)$ will be simulated as independent draws (over *i*, *v*, and *e*) from a normal distribution with mean zero and variance $\\scriptstyle\\sigma\_\\text{error}^2$ equal to some proportion of the signal variance. Define the variance of the simulated signal terms $\\scriptstyle\\sum\_{c=1}^C k\_{c,v,e}\\phi^{\\star}\_c(t) + \\sum\_{c=1}^C \\xi\_{c,i,v,e}\\phi^{\\star}\_c(t)$ to be $\\scriptstyle\\sigma\_\\text{signal}^2$. For the purposes of this vignette, we will only explore the low noise case in which 1/3 of the simulated ERP will be noise so $\\scriptstyle\\sigma^2\_\\text{error} = \\sqrt{0.5}\\times\\sigma\_\\text{signal}$.
+The last term is the independent and identically distributed (iid) measurement error. The measurement error *ζ*<sub>*i*, *v*, *e*</sub>(*t*) will be simulated as independent draws (over *i*, *v*, and *e*) from a normal distribution with mean zero and variance *σ*<sub>error</sub><sup>2</sup> equal to some proportion of the signal variance. Define the variance of the simulated signal terms $\\sum\_{c=1}^C k\_{c,v,e}\\phi^{\\star}\_c(t) + \\sum\_{c=1}^C \\xi\_{c,i,v,e}\\phi^{\\star}\_c(t)$ to be *σ*<sub>signal</sub><sup>2</sup>. For the purposes of this vignette, we will only explore the low noise case in which 1/3 of the simulated ERP will be noise so $\\sigma^2\_\\text{error} = \\sqrt{0.5}\\times\\sigma\_\\text{signal}$.
 
 The data to be used in the `pERPred` function must be averaged over trials. Then there must be one column for the "Task", "Subject", and "Time", and the remaining columns are the named electrodes that were observed. All subjects must have the same number of time points observed as well as the same number of tasks. However, there may be a different number of electrodes (use NA for the missing electrodes). For example, our simulated data looks like this:
 
@@ -59,9 +59,9 @@ Now using the `pERPred` function, you can estimate the pERPs. There are two choi
 1. the number of pERPs to estimate; and
 2. the proportion of variation each of the PCA steps must explain.
 
-By default, the percent of variation is set to 80. Raising this value means more components will be kept in each of the PCA steps and the computation time will rise accordingly. Also, the number of pERPs is chosen based on an $\\scriptstyleR^2$ value defined as: $\\scriptstyle R\_{test}^2 = 1 - \\frac{|| Y\_j - \\Phi \\beta\_j ||\_{\\mathcal{F}}^2}{|| Y\_j ||\_{\\mathcal{F}}^2}$ and can be calculated using the `R2_test` function.
+By default, the percent of variation is set to 80. Raising this value means more components will be kept in each of the PCA steps and the computation time will rise accordingly. Also, the number of pERPs is chosen based on an *R*<sup>2</sup> value defined as: $R\_{test}^2 = 1 - \\frac{|| Y\_j - \\Phi \\beta\_j ||\_{\\mathcal{F}}^2}{|| Y\_j ||\_{\\mathcal{F}}^2}$ and can be calculated using the `R2_test` function.
 
-When estimating the pERPs, split the data into a training and test set, then calculate the $\\scriptstyle R^2\_{test}$. After the number of pERPs is chosen, you can re-estimate the pERPs using the whole dataset. If preferred, it is possible to parallelize the estimation to speed up this process using the `future` package (see commented code).
+When estimating the pERPs, split the data into a training and test set, then calculate the *R*<sub>*t**e**s**t*</sub><sup>2</sup>. After the number of pERPs is chosen, you can re-estimate the pERPs using the whole dataset. If preferred, it is possible to parallelize the estimation to speed up this process using the `future` package (see commented code).
 
 ``` r
 subject_list <- unique(simulated_data$Subject)
@@ -93,7 +93,7 @@ pERPs <- map(
 #   .progress = TRUE)
 ```
 
-Based on the $\\scriptstyle R^2\_{test}$ values, we would choose 5 as the appropriate number of pERPs since it is the point at which the $\\scriptstyle R^2\_{test}$ tapers off.
+Based on the *R*<sub>*t**e**s**t*</sub><sup>2</sup> values, we would choose 5 as the appropriate number of pERPs since it is the point at which the *R*<sub>*t**e**s**t*</sub><sup>2</sup> tapers off.
 
 ``` r
 R2 <- map_dfr(pERPs, ~R2_test(simulated_data, .x)) 
@@ -130,7 +130,7 @@ pERPs5 %>%
 
 ### pERP-space Analysis
 
-There are many analyses we can perform using these pERPs. In the paper, we discuss a few. First, we want to compute the weights $\\scriptstyle \\omega\_j$ for each record using the `pERP_scorer` function.
+There are many analyses we can perform using these pERPs. In the paper, we discuss a few. First, we want to compute the weights *ω*<sub>*j*</sub> for each record using the `pERP_scorer` function.
 
 ``` r
 individual_scores <- pERP_scorer(simulated_data, pERPs5)
