@@ -33,7 +33,7 @@ Imports:
     plyr, 
     kableExtra, 
     knitr
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 Suggests: 
     rmarkdown, 
     tidyverse, 

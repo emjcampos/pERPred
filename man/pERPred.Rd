@@ -4,8 +4,12 @@
 \alias{pERPred}
 \title{Principle ERP Reduction}
 \usage{
-pERPred(df, num_pERPs = 20, percent_variation_electrode = 80,
-  percent_variation_subject = 80)
+pERPred(
+  df,
+  num_pERPs = 20,
+  percent_variation_electrode = 80,
+  percent_variation_subject = 80
+)
 }
 \arguments{
 \item{df}{The dataframe with a column for Task, Subject, and Time. The remaining columns are the Electrodes.}

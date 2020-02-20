@@ -1,7 +1,5 @@
 ---
-output: 
-  github_document:
-    pandoc_args: --webtex
+output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -32,7 +30,7 @@ load(here("vignettes/data/estimation.rda"))
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `pERPred` package is a tool for conducting ERP analyses using the Principle ERP Reduction algorithm put forth in by Campos and Hazlett et al (2020). This package contains the functions necessary to derive the principle ERPs discussed in that publication as well as the tools for performing "pERP-space analysis". Let this serve as a guide to our approach to ERP analysis in `R`. 
+The `pERPred` package is a tool for conducting ERP analyses using the Principle ERP Reduction algorithm put forth in Campos and Hazlett et al (2020). This package contains the functions necessary to derive the principle ERPs discussed in that publication as well as the tools for performing "pERP-space analysis". Let this serve as a guide to our approach to ERP analysis in `R`. 
 
 ## Installation
 
@@ -110,26 +108,33 @@ task_list <- unique(simulated_data$Task)
 train_subjects <- 
   sort(sample(subject_list, round(2 * length(subject_list) / 3)))
 
-pERPs <- map(3:7, 
-             ~ pERPred(simulated_data[simulated_data$Subject %in%
-                                        train_subjects, ],
-                       num_pERPs = .x,
-                       percent_variation = 80))
+pERPs <- map(
+  3:7, 
+  ~ pERPred(
+    simulated_data[simulated_data$Subject %in% train_subjects, ],
+    num_pERPs = .x,
+    percent_variation_electrode = 80, 
+    percent_variation_subject = 80
+  )
+)
 
 # library(future)
-# plan(multiprocess) 
-# pERPs <- future_map(3:7, 
-#                     ~ pERPred(simulated_data[simulated_data$Subject %in% 
-#                                                train_subjects, ], 
-#                               num_pERPs = .x, 
-#                               percent_variation = 80), 
-#                     .progress = TRUE)
+# plan(multiprocess)
+# pERPs <- future_map(
+#   3:7,
+#   ~ pERPred(
+#     simulated_data[simulated_data$Subject %in% train_subjects, ],
+#     num_pERPs = .x,
+#     percent_variation_electrode = 80, 
+#     percent_variation_subject = 80
+#   ),
+#   .progress = TRUE)
 ```
 
 Based on the $\scriptstyle R^2_{test}$ values, we would choose 5 as the appropriate number of pERPs since it is the point at which the $\scriptstyle R^2_{test}$ tapers off. 
 
 ```{r r2 test, eval = FALSE}
-map_dfr(pERPs, ~R2_test(simulated_data, .x)) 
+R2 <- map_dfr(pERPs, ~R2_test(simulated_data, .x)) 
 ```
 
 ```{r load r2 test, echo = FALSE}
@@ -137,9 +142,12 @@ R2
 ```
 
 ```{r re-estimate pERPs, eval = FALSE}
-pERPs5 <- pERPred(simulated_data,
-                 num_pERPs = 5,
-                 percent_variation = 80)
+pERPs5 <- pERPred(
+  simulated_data,
+  num_pERPs = 5,
+  percent_variation_electrode = 80, 
+  percent_variation_subject = 80
+)
 ```
 
 ```{r plot_pERPs}
@@ -171,11 +179,13 @@ record <- simulated_data %>%
   filter(Subject == "Subject_001", 
          Task == "Task_1") %>% 
   select(Task, Time, "CZ")
+
 scores <- individual_scores %>% 
   filter(Subject == "Subject_001", 
          Electrode == "CZ", 
          Task == "Task_1") %>% 
   pull(estimate)
+
 projected <- data.frame("Projected" = as.matrix(pERPs5) %*% 
                           as.matrix(scores)) %>% 
   as.data.frame() %>% 
@@ -209,10 +219,12 @@ coefficient_headmap("Task_1", average_scores[c("Task_1", "Task_2")])
 Here is an example of how one would conduct tests for differences among groups. We will test if there is a difference in scores for Task_1 and Task_2 at CZ. 
 
 ```{r pERP difference}
-pERP_difference(scores = individual_scores,
-                electrode = "CZ",
-                task1 = "Task_1",
-                task2 = "Task_2")
+pERP_difference(
+  scores = individual_scores,
+  electrode = "CZ",
+  task1 = "Task_1",
+  task2 = "Task_2"
+)
 ```
 
 If we had another grouping variable, such as diagnosis, we could add that to the individual scores dataframe. 
