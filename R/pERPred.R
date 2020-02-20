@@ -8,7 +8,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @param df The dataframe with a column for Task, Subject, and Time. The remaining columns are the Electrodes.
 #' @param num_pERPs The number of pERPs to estimate.
 #' @param percent_variation_electrode The percent variation to use in the electrode PCA step.
-#' #' @param percent_variation_subject The percent variation to use in the subject PCA step.
+#' @param percent_variation_subject The percent variation to use in the subject PCA step.
 #'
 #' @return pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorithm.
 #' @export

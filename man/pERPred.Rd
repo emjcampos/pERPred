@@ -4,20 +4,17 @@
 \alias{pERPred}
 \title{Principle ERP Reduction}
 \usage{
-pERPred(
-  df,
-  num_pERPs = 20,
-  percent_variation_electrode = 80,
-  percent_variation_subject = 80
-)
+pERPred(df, num_pERPs = 20, percent_variation_electrode = 80,
+  percent_variation_subject = 80)
 }
 \arguments{
 \item{df}{The dataframe with a column for Task, Subject, and Time. The remaining columns are the Electrodes.}
 
 \item{num_pERPs}{The number of pERPs to estimate.}
 
-\item{percent_variation_electrode}{The percent variation to use in the electrode PCA step.
-#' @param percent_variation_subject The percent variation to use in the subject PCA step.}
+\item{percent_variation_electrode}{The percent variation to use in the electrode PCA step.}
+
+\item{percent_variation_subject}{The percent variation to use in the subject PCA step.}
 }
 \value{
 pERPs The prinicple ERPs (pERPs) are the bases functions estimated by the pERP-RED algorithm.
