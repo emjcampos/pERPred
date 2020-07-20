@@ -102,7 +102,7 @@ shiny_pERPs <- function(data, groups, pERPs, scores) {
                 "diff_electrode", "Electrode:",
                 choices = sort(colnames(data[, -which(names(data) %in%
                                                         c("Time","Subject",
-                                                          "Time"))])),
+                                                          "Task"))])),
                 selected = "CZ"),
               h4("Group 1"),
               selectInput("diff_task1", "Task:",
