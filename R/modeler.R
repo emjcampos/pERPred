@@ -47,7 +47,8 @@ pERP_scorer <- function(df, pERPs) {
     gather(Electrode, Signal, -c(Task, Subject, Time)) %>%
     group_by(Task, Subject, Electrode) %>%
     do(model = modeler(., pERPs)) %>%
-    tidy(model) %>%
+    rowwise(Task, Subject, Electrode) %>%
+    summarise(tidy(model)) %>%
     mutate(term = gsub("`", "", term)) %>%
     ungroup()
 }
