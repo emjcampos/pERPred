@@ -104,11 +104,16 @@ task_list <- unique(simulated_data$Task)
 train_subjects <- 
   sort(sample(subject_list, round(2 * length(subject_list) / 3)))
 
-pERPs <- map(3:7, 
-             ~ pERPred(simulated_data[simulated_data$Subject %in%
-                                        train_subjects, ],
-                       num_pERPs = .x,
-                       percent_variation = 80))
+pERPs <- map(
+  3:7, 
+  ~ pERPred(
+    simulated_data[simulated_data$Subject %in%
+                     train_subjects, ],
+    num_pERPs = .x,
+    percent_variation_electrode = 80, 
+    percent_variation_subject = 80
+  )
+)
 
 # library(future)
 # plan(multiprocess) 
@@ -131,9 +136,12 @@ R2
 ```
 
 ```{r re-estimate pERPs, eval = FALSE}
-pERPs5 <- pERPred(simulated_data,
-                 num_pERPs = 5,
-                 percent_variation = 80)
+pERPs5 <- pERPred(
+  simulated_data,
+  num_pERPs = 5,
+  percent_variation_electrode = 80, 
+  percent_variation_subject = 80
+)
 ```
 
 ```{r plot_pERPs}

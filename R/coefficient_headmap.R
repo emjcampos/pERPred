@@ -9,6 +9,7 @@
 #' @export
 #' @import ggplot2
 #' @importFrom grDevices colorRampPalette
+#' @import harrypotter
 #'
 
 coefficient_headmap <- function(task, scores) {
@@ -50,8 +51,7 @@ coefficient_headmap <- function(task, scores) {
 
 
   scores_long <- scores[[task]] %>%
-    left_join(electrodeLocs, by = "Electrode") %>%
-    filter(complete.cases(.))
+    left_join(electrodeLocs, by = "Electrode")
 
   ggplot(headShape, aes(x, y)) +
     geom_path(size = 1.5) +
@@ -59,9 +59,10 @@ coefficient_headmap <- function(task, scores) {
                aes(x, y, colour = average),
                size = 7) +
     geom_text(data = scores_long, aes(x, y, label = Electrode), size = 3) +
-    scale_colour_gradientn(colours = jet.colors(10),
-                           guide = "colourbar",
-                           limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))) +
+    scale_colour_hp(
+      option = "LunaLovegood",
+      limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))
+    ) +
     geom_line(data = nose, aes(x, y, z = NULL), size = 1.5) +
     theme_topo() +
     facet_wrap(~ term, ncol = ceiling(length(unique(scores_long$term))/2)) +
