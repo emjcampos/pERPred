@@ -9,7 +9,6 @@
 #' @export
 #' @import ggplot2
 #' @importFrom grDevices colorRampPalette
-#' @import harrypotter
 #'
 
 coefficient_headmap <- function(task, scores) {
@@ -59,8 +58,9 @@ coefficient_headmap <- function(task, scores) {
                aes(x, y, colour = average),
                size = 7) +
     geom_text(data = scores_long, aes(x, y, label = Electrode), size = 3) +
-    scale_colour_hp(
-      option = "LunaLovegood",
+    scale_colour_gradientn(
+      colours = jet.colors(10),
+      guide = "colourbar",
       limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))
     ) +
     geom_line(data = nose, aes(x, y, z = NULL), size = 1.5) +

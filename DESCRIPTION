@@ -32,8 +32,7 @@ Imports:
     stringr, 
     plyr, 
     kableExtra, 
-    knitr, 
-    harrypotter
+    knitr
 RoxygenNote: 7.1.1
 Suggests: 
     rmarkdown, 
