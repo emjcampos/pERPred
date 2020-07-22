@@ -44,13 +44,14 @@ coefficient_headmap <- function(task, scores) {
                                    "#7F0000"))
 
   limits <- map_dfr(scores, ~.x) %>%
-    ungroup () %>%
+    ungroup() %>%
     summarise("max" = max(average),
               "min" = min(average))
 
 
   scores_long <- scores[[task]] %>%
-    left_join(electrodeLocs, by = "Electrode")
+    left_join(electrodeLocs, by = "Electrode") %>%
+    filter(complete.cases(.))
 
   ggplot(headShape, aes(x, y)) +
     geom_path(size = 1.5) +
@@ -60,7 +61,7 @@ coefficient_headmap <- function(task, scores) {
     geom_text(data = scores_long, aes(x, y, label = Electrode), size = 3) +
     scale_colour_gradientn(colours = jet.colors(10),
                            guide = "colourbar",
-                           limits = c(limits$min, limits$max)) +
+                           limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))) +
     geom_line(data = nose, aes(x, y, z = NULL), size = 1.5) +
     theme_topo() +
     facet_wrap(~ term, ncol = ceiling(length(unique(scores_long$term))/2)) +
