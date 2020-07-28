@@ -70,6 +70,11 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
   electrode_num_comps_chosen <- vector("integer")
 
   for (person in subject_list) {
+
+    if (num_electrodes > datapoints) {
+      stop("PCA requires that the number of electrodes is smaller than the number of tasks x timepoints!")
+    }
+
     # store the pca results
     electrode_pcas[[person]] <- scaled_data %>%
       # fix subject
@@ -107,8 +112,10 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
       select_if( ~ !any(is.na(.))) %>%
       select(-c(Task, Subject, Time))
 
-    principal_electrodes <- vector("list",
-                                   electrode_num_comps_chosen[thissubject])
+    principal_electrodes <- vector(
+      "list",
+      electrode_num_comps_chosen[thissubject]
+    )
     for (i in 1:electrode_num_comps_chosen[thissubject]) {
       principal_electrodes[[i]] <- as.matrix(subject_data) %*%
         as.matrix(electrode_loads[[thissubject]][, i])
@@ -150,11 +157,13 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
   }
 
   scaled_subject_regions <- map_dfr(.x = task_list,
-                                    ~ normalize_subject_region(electrodes_reduced,
-                                                               .x))
+                                    ~ normalize_subject_region(electrodes_reduced, x))
 
 
   # Reduce Subject-Regions -------------------------------------------------
+  if (ncol(scaled_subject_regions) > nrow(scaled_subject_regions)) {
+    stop("PCA requires that the number of subject-regions is smaller than the number of tasks x timepoints!")
+  }
 
   subject_region_pca <- scaled_subject_regions %>%
     princomp()
