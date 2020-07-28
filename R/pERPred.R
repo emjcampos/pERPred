@@ -1,5 +1,5 @@
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+if (getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
 #
 #' @title Principle ERP Reduction
@@ -64,9 +64,9 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
   # Reduce electrode dimension ---------------------------------------------
 
   # set up with empty lists
-  electrode_pcas <- vector("list")
-  electrode_loads <- vector("list")
-  electrode_var_tables <- vector("list")
+  electrode_pcas             <- vector("list")
+  electrode_loads            <- vector("list")
+  electrode_var_tables       <- vector("list")
   electrode_num_comps_chosen <- vector("integer")
 
   for (person in subject_list) {
@@ -156,8 +156,8 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
       as.data.frame()
   }
 
-  scaled_subject_regions <- map_dfr(.x = task_list,
-                                    ~ normalize_subject_region(electrodes_reduced, x))
+  scaled_subject_regions <- map_dfr(task_list,
+                                    ~ normalize_subject_region(electrodes_reduced, .x))
 
 
   # Reduce Subject-Regions -------------------------------------------------
