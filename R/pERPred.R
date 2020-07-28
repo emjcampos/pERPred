@@ -39,14 +39,14 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
 
   # Setup ------------------------------------------------------------------
 
-  datapoints <- length(unique(df$Time))
-  start_time <- min(df$Time)
-  end_time <- max(df$Time)
-  subject_list <- unique(df$Subject)
-  num_subjects <- length(subject_list)
-  task_list <- unique(df$Task)
-  num_tasks <- length(task_list)
-  electrode_list <- names(df)[! names(df) %in% c("Task", "Subject", "Time")]
+  datapoints     <- length(unique(df$Time))
+  start_time     <- min(df$Time)
+  end_time       <- max(df$Time)
+  subject_list   <- unique(df$Subject)
+  num_subjects   <- length(subject_list)
+  task_list      <- unique(df$Task)
+  num_tasks      <- length(task_list)
+  electrode_list <- names(df)[!names(df) %in% c("Task", "Subject", "Time")]
   num_electrodes <- length(electrode_list)
 
   # Normalize each record --------------------------------------------------
@@ -71,9 +71,9 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
 
   for (person in subject_list) {
 
-    if (num_electrodes > datapoints) {
+    try(if (num_electrodes > datapoints) {
       stop("PCA requires that the number of electrodes is smaller than the number of tasks x timepoints!")
-    }
+    })
 
     # store the pca results
     electrode_pcas[[person]] <- scaled_data %>%
@@ -161,9 +161,9 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
 
 
   # Reduce Subject-Regions -------------------------------------------------
-  if (ncol(scaled_subject_regions) > nrow(scaled_subject_regions)) {
+  try(if (ncol(scaled_subject_regions) > nrow(scaled_subject_regions)) {
     stop("PCA requires that the number of subject-regions is smaller than the number of tasks x timepoints!")
-  }
+  })
 
   subject_region_pca <- scaled_subject_regions %>%
     princomp()
