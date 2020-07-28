@@ -71,8 +71,13 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
 
   for (person in subject_list) {
 
-    try(if (num_electrodes > datapoints) {
-      stop("PCA requires that the number of electrodes is smaller than the number of tasks x timepoints!")
+    try(if (num_electrodes > (datapoints * num_tasks)) {
+      stop(glue(
+        "Uh oh! PCA requires that the number of subject-regions is smaller than
+        the number of tasks x timepoints! You have {num_electrodes}
+        subject-regions and {datapoints * num_tasks} tasks x timepoints,
+        whomp whomp."
+      ))
     })
 
     # store the pca results
@@ -162,7 +167,11 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
 
   # Reduce Subject-Regions -------------------------------------------------
   try(if (ncol(scaled_subject_regions) > nrow(scaled_subject_regions)) {
-    stop("PCA requires that the number of subject-regions is smaller than the number of tasks x timepoints!")
+    stop(glue(
+      "Uh oh! PCA requires that the number of subject-regions is smaller than
+      the number of tasks x timepoints! You have {ncol(scaled_subject_regions)}
+      subject-regions and {nrow(scaled_subject_regions)} tasks x timepoints,
+      whomp whomp."))
   })
 
   subject_region_pca <- scaled_subject_regions %>%
