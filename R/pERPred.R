@@ -20,6 +20,7 @@ if (getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @importFrom purrr map_chr map_dfr
 #' @importFrom tibble rownames_to_column
 #' @importFrom factoextra get_eigenvalue
+#' @importFrom glue glue
 
 pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percent_variation_subject = 80) {
   # to avoid issues with non-standard evaluation in tidyeval, set "global
@@ -72,11 +73,8 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
   for (person in subject_list) {
 
     try(if (num_electrodes > (datapoints * num_tasks)) {
-      stop(glue(
-        "Uh oh! PCA requires that the number of subject-regions is smaller than
-        the number of tasks x timepoints! You have {num_electrodes}
-        subject-regions and {datapoints * num_tasks} tasks x timepoints,
-        whomp whomp."
+      stop(glue::glue(
+        "Uh oh! PCA requires that the number of subject-regions is smaller than the number of tasks x timepoints! You have {num_electrodes} subject-regions and {datapoints * num_tasks} tasks x timepoints, whomp whomp."
       ))
     })
 
@@ -167,11 +165,8 @@ pERPred <- function(df, num_pERPs = 20, percent_variation_electrode = 80, percen
 
   # Reduce Subject-Regions -------------------------------------------------
   try(if (ncol(scaled_subject_regions) > nrow(scaled_subject_regions)) {
-    stop(glue(
-      "Uh oh! PCA requires that the number of subject-regions is smaller than
-      the number of tasks x timepoints! You have {ncol(scaled_subject_regions)}
-      subject-regions and {nrow(scaled_subject_regions)} tasks x timepoints,
-      whomp whomp."))
+    stop(glue::glue(
+      "Uh oh! PCA requires that the number of subject-regions is smaller than the number of tasks x timepoints! You have {ncol(scaled_subject_regions)} subject-regions and {nrow(scaled_subject_regions)} tasks x timepoints, whomp whomp."))
   })
 
   subject_region_pca <- scaled_subject_regions %>%
