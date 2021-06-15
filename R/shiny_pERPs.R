@@ -213,7 +213,7 @@ shiny_pERPs <- function(data, groups, pERPs, scores) {
               summarise(average = mean(estimate, na.rm = TRUE) /
                           (sd(estimate, na.rm = TRUE)/sqrt(n()))) %>%
               split(.$Task)
-            coefficient_headmap(input$headmap_task, average_scores)
+            coefficient_headmap(input$headmap_task, average_scores, input$standard)
           } else {
             average_scores <- scores %>%
               filter(Task == input$headmap_task) %>%
@@ -237,9 +237,10 @@ shiny_pERPs <- function(data, groups, pERPs, scores) {
               split(.$Task)
 
             plots <- map(
-              c(input$headmap_task, input$compare_task, "Difference"),
-              ~ coefficient_headmap(.x, average_scores)
+              c(input$headmap_task, input$compare_task),
+              ~ coefficient_headmap(.x, average_scores, input$standard)
             )
+            plots[[3]] <- coefficient_headmap("Difference", average_scores["Difference"], input$standard)
             grid.arrange(grobs = plots, ncol = 3)
 
           } else {
@@ -255,9 +256,10 @@ shiny_pERPs <- function(data, groups, pERPs, scores) {
               split(.$Task)
 
             plots <- map(
-              c(input$headmap_task, input$compare_task, "Difference"),
+              c(input$headmap_task, input$compare_task),
               ~ coefficient_headmap(.x, average_scores)
             )
+            plots[3] <- coefficient_headmap("Difference", average_scores[["Difference"]])
             grid.arrange(grobs = plots, ncol = 3)
           }
 

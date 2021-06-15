@@ -11,7 +11,7 @@
 #' @importFrom grDevices colorRampPalette
 #'
 
-coefficient_headmap <- function(task, scores) {
+coefficient_headmap <- function(task, scores, standard = 0) {
   average <- NULL
   Electrode <- NULL
   x <- NULL
@@ -39,33 +39,62 @@ coefficient_headmap <- function(task, scores) {
   headShape <- circleFun(c(0, 0), round(max(electrodeLocs$x)), npoints = 100)
   nose <- data.frame(x = c(-0.075, 0, .075), y = c(.495, .575, .495))
 
-  jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan",
-                                   "#7FFF7F", "yellow", "#FF7F00", "red",
-                                   "#7F0000"))
+  jet.colors <- colorRampPalette(c(
+    "#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red",
+    "#7F0000"
+  ))
+  jet.colors = colorRampPalette(c(
+    "blue", "grey", "red"
+  ))
 
   limits <- map_dfr(scores, ~.x) %>%
     ungroup() %>%
-    summarise("max" = max(average),
-              "min" = min(average))
+    summarise(
+      "max" = max(average),
+      "min" = min(average)
+    )
 
 
   scores_long <- scores[[task]] %>%
     left_join(electrodeLocs, by = "Electrode")
 
-  ggplot(headShape, aes(x, y)) +
-    geom_path(size = 1.5) +
-    geom_point(data = scores_long,
-               aes(x, y, colour = average),
-               size = 7) +
-    geom_text(data = scores_long, aes(x, y, label = Electrode), size = 3) +
-    scale_colour_gradientn(
-      colours = jet.colors(10),
-      guide = "colourbar",
-      limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))
-    ) +
-    geom_line(data = nose, aes(x, y, z = NULL), size = 1.5) +
-    theme_topo() +
-    facet_wrap(~ term, ncol = ceiling(length(unique(scores_long$term))/2)) +
-    coord_equal() +
-    labs(title = task)
+  if (standard) {
+    ggplot(headShape, aes(x, y)) +
+      geom_path(size = 1.5) +
+      geom_point(data = scores_long,
+                 aes(x, y, colour = average),
+                 size = 7) +
+      geom_text(data = scores_long, aes(x, y, label = Electrode), size = 3) +
+      scale_colour_gradientn(
+        colours = jet.colors(3),
+        guide = "colourbar",
+        values = scales::rescale(c(
+          -1 * max(abs(c(limits$min, limits$max))), -2, 2,
+          1 * max(abs(c(limits$min, limits$max)))
+        )),
+        limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))
+      ) +
+      geom_line(data = nose, aes(x, y, z = NULL), size = 1.5) +
+      theme_topo() +
+      facet_wrap(~ term, ncol = ceiling(length(unique(scores_long$term))/2)) +
+      coord_equal() +
+      labs(title = task, color = element_blank())
+  } else {
+    ggplot(headShape, aes(x, y)) +
+      geom_path(size = 1.5) +
+      geom_point(data = scores_long,
+                 aes(x, y, colour = average),
+                 size = 7) +
+      geom_text(data = scores_long, aes(x, y, label = Electrode), size = 3) +
+      scale_colour_gradientn(
+        colours = jet.colors(3),
+        guide = "colourbar",
+        limits = c(-1, 1) * max(abs(c(limits$min, limits$max)))
+      ) +
+      geom_line(data = nose, aes(x, y, z = NULL), size = 1.5) +
+      theme_topo() +
+      facet_wrap(~ term, ncol = ceiling(length(unique(scores_long$term))/2)) +
+      coord_equal() +
+      labs(title = task, color = element_blank())
+  }
 }
