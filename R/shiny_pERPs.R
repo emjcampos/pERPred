@@ -259,7 +259,7 @@ shiny_pERPs <- function(data, groups, pERPs, scores) {
               c(input$headmap_task, input$compare_task),
               ~ coefficient_headmap(.x, average_scores)
             )
-            plots[3] <- coefficient_headmap("Difference", average_scores[["Difference"]])
+            plots[3] <- coefficient_headmap("Difference", average_scores["Difference"])
             grid.arrange(grobs = plots, ncol = 3)
           }
 
